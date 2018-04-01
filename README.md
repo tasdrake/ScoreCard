@@ -7,3 +7,5 @@ In Xcode
 1. Open scoreCard/ios/scoreCard.xcodeproj
 1. select target device, either the simulator or a connected device
 1. click run
+
+Register your iPhone for HockeyApp at https://rink.io/sABWRPY
