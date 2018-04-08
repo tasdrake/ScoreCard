@@ -12,6 +12,9 @@ export default class ScoreCard extends Component<Props> {
     super(props)
     this.state = {
       players: [
+        // {
+        //   name: ''
+        // },
         {
           name: 'Tas',
           points: [],
@@ -115,7 +118,8 @@ export default class ScoreCard extends Component<Props> {
     return (
         <View style={styles.container}>
           <View style={[styles.row, styles.info, { width: rowWidth }]}>
-            <Text style={[styles.name]}></Text>
+            {/* set width to styles.name.width - 1 */}
+            <Text style={[styles.name, {width: 74}]}></Text>
             {
               this.columnsTop()
             }
