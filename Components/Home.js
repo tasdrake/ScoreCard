@@ -14,55 +14,76 @@ export default class App extends Component<Props> {
       players: [
         {
           name: 'Tas',
-          points: []
+          points: [],
+          total: 0,
         },
         {
           name: 'Ali',
-          points: []
+          points: [],
+          total: 0,
         },
         {
           name: 'Emmy',
-          points: []
+          points: [],
+          total: 0,
         },
         {
           name: 'Wade',
-          points: []
+          points: [],
+          total: 0,
         }
       ],
       columns: 4
     }
+    this.state.players.forEach(e => {
+      for (let i = 0; i < this.state.columns; i++) {
+        e.points.push('')
+      }
+    })
   }
 
-  total = (playerIdx, i) => {
-
+  total = (playerIdx, i, point) => {
+    const players = this.state.players
+    if (!point.length && players[playerIdx].points[i]) {
+      players[playerIdx].points[i] = ''
+    } else if (typeof Number(point) === 'number' && !isNaN(Number(point))) {
+      players[playerIdx].points[i] = point
+    }
+    players[playerIdx].total = players[playerIdx].points.reduce((a, b) => {
+      a = Number(a)
+      b = Number(b)
+      if (isNaN(a) && isNaN(b)) return 0 + 0
+      if (isNaN(b)) return a + 0
+      if (isNaN(a)) return 0 + b
+      return a + b
+    }, 0)
+    this.setState({ players })
   }
 
   columns = (playerIdx) => {
     const col = []
     for (let i = 0; i < this.state.columns + 1; i++) {
-      // console.log(i === this.state.columns)
       if (i === 0) {
         col.push(<TextInput key={i}
+                            keyboardType = 'numeric'
                             textAlign={'center'}
                             style={[styles.points, styles.firstColumn]}
-                            onChange={ this.total(playerIdx, i) }></TextInput>)
+                            onChangeText={ (point) => this.total(playerIdx, i, point) }
+                            value={ this.state.players[playerIdx].points[i]}></TextInput>)
       } else if (i === this.state.columns) {
         col.push(
           <View key={i} textAlign={'center'} style={[styles.points, styles.lastColumn]}>
             <Text>
-              {
-                this.state.players[playerIdx].points.reduce((a, b) => {
-                  if (isNaN(b)) return a + 0
-                  return a + b
-                }, 0)
-              }
+              { this.state.players[playerIdx].total }
             </Text>
           </View>)
       } else {
         col.push(<TextInput key={i}
+                            keyboardType = 'numeric'
                             textAlign={'center'}
                             style={styles.points}
-                            onChange={ this.total(playerIdx, i) }></TextInput>)
+                            onChangeText={ (point) => this.total(playerIdx, i, point) }
+                            value={ this.state.players[playerIdx].points[i]}></TextInput>)
       }
     }
     return <View style={styles.pointContainer}>{ col }</View>
