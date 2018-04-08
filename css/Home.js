@@ -10,7 +10,7 @@ module.exports = StyleSheet.create({
     padding: 10
   },
   name: {
-    backgroundColor: colors.gray,
+    backgroundColor: colors.lightGray,
     width: 75,
     textAlign: 'left',
     paddingLeft: 5,
@@ -49,15 +49,16 @@ module.exports = StyleSheet.create({
     justifyContent: 'center',
   },
   info: {
-    backgroundColor: colors.gray
+    backgroundColor: colors.lightGray
   },
   lastColumn: {
-    borderRightWidth: 0,
-    width: 20,
+    backgroundColor: colors.gray,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   firstColumn: {
     borderRightWidth: 0,
     borderLeftWidth: 0,
-    width: 20,
   }
 })
