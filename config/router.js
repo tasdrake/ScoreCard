@@ -1,8 +1,8 @@
 import { StackNavigator } from 'react-navigation'
-import Home from '../Components/Home'
+import ScoreCard from '../Components/ScoreCard'
 
 export const Root = StackNavigator({
-  Home: {
-    screen: Home
+  ScoreCard: {
+    screen: ScoreCard
   }
 })

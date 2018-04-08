@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styles from '../css/Home'
+import styles from '../css/ScoreCard'
 import {
     Text,
     View,
@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 type Props = {};
-export default class App extends Component<Props> {
+export default class ScoreCard extends Component<Props> {
   constructor(props) {
     super(props)
     this.state = {
@@ -89,44 +89,53 @@ export default class App extends Component<Props> {
     return <View style={styles.pointContainer}>{ col }</View>
   }
 
-  // columnsTop = () => {
-  //   const col = []
-  //   for (let i = 0; i < this.state.columns; i++) {
-  //     col.push(<TextInput key={i}
-  //                         textAlign={'center'}
-  //                         style={
-  //                           i === 0 ? [styles.points, styles.firstColumn] :
-  //                           styles.points
-  //                         }>val</TextInput>)
-  //   }
-  //   return <View style={styles.pointContainer}>{ col }</View>
-  // }
+  columnsTop = () => {
+    const col = []
+    for (let i = 0; i < this.state.columns + 1; i++) {
+      if (i === this.state.columns) {
+        col.push(
+          <View key={i} textAlign={'center'} style={[styles.points, styles.lastColumn]}>
+            <Text>Total</Text>
+          </View>
+        )
+      } else {
+        col.push(<TextInput key={i}
+                            keyboardType = 'numeric'
+                            textAlign={'center'}
+                            style={styles.points}>col</TextInput>)
+      }
+    }
+    return <View style={styles.pointContainer}>{ col }</View>
+  }
 
   render() {
     const nameWidth = 75
-    const pointWidth = 50
+    const pointWidth = 100
     const rowWidth = nameWidth + pointWidth * (this.state.columns - 1)
     return (
         <View style={styles.container}>
-          {/* <View style={[styles.row, styles.info]}>
-            <Text style={styles.name}>Name</Text>
+          <View style={[styles.row, styles.info, { width: rowWidth }]}>
+            <Text style={[styles.name]}></Text>
             {
-              this.columnsTop()// this.state.columns.map((e, i) => <Text key={i}></Text>)
+              this.columnsTop()
             }
-          </View> */}
+          </View>
           {
             this.state.players.map((e, i) => {
+              let style
+              if (i === 0) {
+                style = [styles.row, styles.firstRow, { width: rowWidth }]
+              }
+              else if (i === this.state.players.lentgh - 1) {
+                style = [styles.row, styles.lastRow, { width: rowWidth }]
+              }
+              else {
+                style = [styles.row, { width: rowWidth }]
+              }
               return (
-                <View key={i}
-                      style={
-                        i === 0 ? [styles.row, styles.firstRow, { width: rowWidth }] :
-                        i === this.state.players.length - 1 ? [styles.row, styles.lastRow, { width: rowWidth }] :
-                        [styles.row, { width: rowWidth }]
-                      }>
+                <View key={i} style={style}>
                   <TextInput style={styles.name}>{this.state.players[i].name}</TextInput>
-                  {
-                    this.columns(i)
-                  }
+                  { this.columns(i)}
                 </View>
               )
             })

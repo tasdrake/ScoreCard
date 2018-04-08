@@ -40,7 +40,6 @@ module.exports = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 20,
   },
   pointContainer: {
     flex: 1,
@@ -49,7 +48,9 @@ module.exports = StyleSheet.create({
     justifyContent: 'center',
   },
   info: {
-    backgroundColor: colors.lightGray
+    backgroundColor: colors.lightGray,
+    borderBottomWidth: 0,
+    borderTopWidth: 1,
   },
   lastColumn: {
     backgroundColor: colors.gray,
