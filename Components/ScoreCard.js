@@ -12,9 +12,6 @@ export default class ScoreCard extends Component<Props> {
     super(props)
     this.state = {
       players: [
-        // {
-        //   name: ''
-        // },
         {
           name: 'Tas',
           points: [],
