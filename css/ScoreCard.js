@@ -11,14 +11,16 @@ module.exports = StyleSheet.create({
   },
   name: {
     backgroundColor: colors.lightGray,
-    width: 75,
+    minWidth: 75,
+    maxWidth: 75,
     textAlign: 'left',
     paddingLeft: 5,
     paddingVertical: 5,
     alignSelf: 'center',
     height: '100%',
     borderRightWidth: 1,
-    borderColor: colors.black
+    borderColor: colors.black,
+    // marginRight: 50
   },
   row: {
     borderColor: colors.black,
@@ -40,6 +42,8 @@ module.exports = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    minWidth: 50,
+    maxWidth: 50
   },
   pointContainer: {
     flex: 1,
@@ -56,10 +60,46 @@ module.exports = StyleSheet.create({
     backgroundColor: colors.gray,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderRightWidth: 1
   },
   firstColumn: {
     borderRightWidth: 0,
     borderLeftWidth: 0,
-  }
+  },
+  buttonContainer: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    flexDirection: 'row'
+  },
+  addPlayer: {
+    borderColor: colors.black,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    minWidth: 150,
+    maxWidth: 150,
+    maxHeight: 45,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addColumn: {
+    borderColor: colors.black,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    minWidth: 150,
+    maxWidth: 150,
+    maxHeight: 45,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centerButtons: {
+
+  },
 })

@@ -3,7 +3,9 @@ import styles from '../css/ScoreCard'
 import {
     Text,
     View,
-    TextInput
+    TextInput,
+    TouchableOpacity,
+    ScrollView,
 } from 'react-native'
 
 type Props = {};
@@ -108,40 +110,70 @@ export default class ScoreCard extends Component<Props> {
     return <View style={styles.pointContainer}>{ col }</View>
   }
 
+  addPlayer = () => {
+    const players = this.state.players
+    const newPlayer = {
+      name:'',
+      points: [],
+      total: 0
+    }
+    for (let i = 0; i < this.state.columns; i++) {
+      newPlayer.points.push('')
+    }
+    players.push(newPlayer)
+    this.setState({ players })
+  }
+
+  addColumn = () => {
+    let columns = this.state.columns
+    columns++
+    this.setState({ columns })
+  }
+
   render() {
     const nameWidth = 75
-    const pointWidth = 100
-    const rowWidth = nameWidth + pointWidth * (this.state.columns - 1)
+    const pointWidth = 50
+    const rowWidth = nameWidth + pointWidth * this.state.columns + 50
     return (
+      <ScrollView horizontal={true}>
         <View style={styles.container}>
-          <View style={[styles.row, styles.info, { width: rowWidth }]}>
-            {/* set width to styles.name.width - 1 */}
-            <Text style={[styles.name, {width: 74}]}></Text>
-            {
-              this.columnsTop()
-            }
+          <View style={[styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }]}>
+            {/* set width to styles.name.width - 1 to fix top alignment */}
+            <Text style={styles.name}></Text>
+            { this.columnsTop() }
           </View>
           {
             this.state.players.map((e, i) => {
               let style
               if (i === 0) {
-                style = [styles.row, styles.firstRow, { width: rowWidth }]
+                style = [styles.row, styles.firstRow, { minWidth: rowWidth, maxWidth: rowWidth }]
               }
               else if (i === this.state.players.lentgh - 1) {
-                style = [styles.row, styles.lastRow, { width: rowWidth }]
+                style = [styles.row, styles.lastRow, { minWidth: rowWidth, maxWidth: rowWidth }]
               }
               else {
-                style = [styles.row, { width: rowWidth }]
+                style = [styles.row, { minWidth: rowWidth, maxWidth: rowWidth }]
               }
               return (
                 <View key={i} style={style}>
                   <TextInput style={styles.name}>{this.state.players[i].name}</TextInput>
-                  { this.columns(i)}
+                  { this.columns(i) }
                 </View>
               )
             })
           }
-      </View>
+          <View style={styles.centerButtons}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={this.addPlayer} style={styles.addPlayer}>
+                <Text>Add a Player</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.addColumn} style={styles.addColumn}>
+                <Text>Add a Column</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
     )
   }
 }
