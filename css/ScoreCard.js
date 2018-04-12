@@ -30,7 +30,8 @@ module.exports = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems:'flex-start',
-    maxHeight: 30
+    maxHeight: 30,
+    minHeight: 30,
   },
   firstRow: {
     borderWidth: 1,
@@ -102,4 +103,11 @@ module.exports = StyleSheet.create({
   centerButtons: {
 
   },
+  scrollView: {
+    // minWidth: '100%'
+    backgroundColor: colors.white,
+  },
+  columnHeader: {
+    backgroundColor: colors.lightGray
+  }
 })

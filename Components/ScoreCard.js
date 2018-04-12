@@ -94,7 +94,11 @@ export default class ScoreCard extends Component<Props> {
   columnsTop = () => {
     const col = []
     for (let i = 0; i < this.state.columns + 1; i++) {
-      if (i === this.state.columns) {
+      if (i === 0) {
+        col.push(<TextInput key={i}
+                            textAlign={'center'}
+                            style={[styles.points, styles.firstColumn]}>col</TextInput>)
+      } else if (i === this.state.columns) {
         col.push(
           <View key={i} textAlign={'center'} style={[styles.points, styles.lastColumn]}>
             <Text>Total</Text>
@@ -102,9 +106,8 @@ export default class ScoreCard extends Component<Props> {
         )
       } else {
         col.push(<TextInput key={i}
-                            keyboardType = 'numeric'
                             textAlign={'center'}
-                            style={styles.points}>col</TextInput>)
+                            style={[styles.points, styles.columnHeader]}>col</TextInput>)
       }
     }
     return <View style={styles.pointContainer}>{ col }</View>
@@ -135,12 +138,14 @@ export default class ScoreCard extends Component<Props> {
     const pointWidth = 50
     const rowWidth = nameWidth + pointWidth * this.state.columns + 50
     return (
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} style={styles.scrollView}>
         <View style={styles.container}>
           <View style={[styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }]}>
             {/* set width to styles.name.width - 1 to fix top alignment */}
-            <Text style={styles.name}></Text>
-            { this.columnsTop() }
+            <TextInput style={styles.name}></TextInput>
+            {/* <ScrollView horizontal={true} style={styles.scrollView}> */}
+              { this.columnsTop() }
+            {/* </ScrollView> */}
           </View>
           {
             this.state.players.map((e, i) => {
@@ -157,7 +162,9 @@ export default class ScoreCard extends Component<Props> {
               return (
                 <View key={i} style={style}>
                   <TextInput style={styles.name}>{this.state.players[i].name}</TextInput>
-                  { this.columns(i) }
+                  {/* <ScrollView horizontal={true} style={styles.scrollView}> */}
+                    { this.columns(i) }
+                  {/* </ScrollView> */}
                 </View>
               )
             })
