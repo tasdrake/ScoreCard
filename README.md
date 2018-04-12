@@ -13,6 +13,8 @@ Register your iPhone for HockeyApp at https://rink.io/sABWRPY, for installing th
 
 Occasionally if you get the same error repeatedly sometimes ```$ yarn start --reset-cache``` will solve the problem.
 
+If you get errors in Xcode ```$ rm -rf node_modules && yarn install ``` will usually fix the problem
+
 Snippets for ~/.atom/snipets.cson:
 
 ```cson
