@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native'
 import colors from './colors'
+import { Dimensions } from "react-native"
+
+const { height, width } = Dimensions.get('window')
 
 module.exports = StyleSheet.create({
     container: {
@@ -70,19 +73,22 @@ module.exports = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
-        width: '100%',
-        alignItems: 'flex-start',
+        width,
+        maxWidth: width,
+        minWidth: width,
+        // alignItems: 'flex-start',
         justifyContent: 'space-around',
         marginTop: 20,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginLeft: -20,
     },
     addPlayer: {
         borderColor: colors.black,
         borderWidth: 1,
         borderRadius: 10,
         padding: 10,
-        minWidth: 150,
-        maxWidth: 150,
+        maxWidth: width - ((width / 1.8 )),
+        minWidth: width - ((width / 1.8 )),
         maxHeight: 45,
         flex: 1,
         justifyContent: 'center',
@@ -93,15 +99,17 @@ module.exports = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         padding: 10,
-        minWidth: 150,
-        maxWidth: 150,
+        maxWidth: width - ((width / 1.8 )),
+        minWidth: width - ((width / 1.8 )),
         maxHeight: 45,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
     centerButtons: {
-
+        flex: 1,
+        width,
+        alignItems: 'center'
     },
     scrollView: {
         // minWidth: '100%'
@@ -109,5 +117,18 @@ module.exports = StyleSheet.create({
     },
     columnHeader: {
         backgroundColor: colors.lightGray
-    }
+    },
+    load: {
+        borderColor: colors.black,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        minWidth: width - 50,
+        maxWidth: width - 50,
+        maxHeight: 45,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+    },
 })
