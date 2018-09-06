@@ -42,7 +42,8 @@ export default class ScoreCard extends Component<Props> {
                     total: 0,
                 }
             ],
-            columns: 4
+            // columns: 4,
+            columns: 1,
         }
         this.state.players.forEach(e => {
             for (let i = 0; i < this.state.columns; i++) {
@@ -115,7 +116,7 @@ export default class ScoreCard extends Component<Props> {
             if (i === 0) {
                 col.push(<TextInput key={ i }
                                     textAlign={ 'center' }
-                                    style={ [styles.points, styles.firstColumn] }>col</TextInput>)
+                                    style={ [styles.points, styles.firstColumn] }></TextInput>)
             } else if (i === this.state.columns) {
                 col.push(
                     <View key={ i } textAlign={ 'center' } style={ [styles.points, styles.lastColumn] }>
@@ -125,7 +126,7 @@ export default class ScoreCard extends Component<Props> {
             } else {
                 col.push(<TextInput key={ i }
                                     textAlign={ 'center' }
-                                    style={ [styles.points, styles.columnHeader] }>col</TextInput>)
+                                    style={ [styles.points, styles.columnHeader] }></TextInput>)
             }
         }
         return <View style={ styles.pointContainer }>{ col }</View>
@@ -178,15 +179,13 @@ export default class ScoreCard extends Component<Props> {
         const pointWidth = 50
         const rowWidth = nameWidth + pointWidth * this.state.columns + pointWidth
         const maxHeight =  (this.state.players.length + 1) * 30
-        //(this.state.players.length - 1) * 30
 
         return (
             <View style={ styles.container }>
                 <View style={{ height: maxHeight }}>
-                  
-                    <ScrollView contentContainerStyle={ [styles.cardContainer, { maxHeight, flexGrow: 0.05 }] }>
+                    <ScrollView contentContainerStyle={ styles.cardContainer } horizontal={ true } >
                         <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }] }>
-                            <TextInput style={ styles.name }></TextInput>
+                            <TextInput style={ styles.name } editable={ false } selectTextOnFocus={ false }></TextInput>
                             { this.columnsTop() }
                         </View>
                         
