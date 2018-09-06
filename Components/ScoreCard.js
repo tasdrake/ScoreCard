@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     ScrollView,
     AsyncStorage,
+    Alert
 } from 'react-native'
 
 type Props = {};
@@ -122,9 +123,9 @@ export default class ScoreCard extends Component<Props> {
                     </View>
                 )
             } else {
-            col.push(<TextInput key={ i }
-                                textAlign={ 'center' }
-                                style={ [styles.points, styles.columnHeader] }>col</TextInput>)
+                col.push(<TextInput key={ i }
+                                    textAlign={ 'center' }
+                                    style={ [styles.points, styles.columnHeader] }>col</TextInput>)
             }
         }
         return <View style={ styles.pointContainer }>{ col }</View>
@@ -155,62 +156,84 @@ export default class ScoreCard extends Component<Props> {
         columns++
         this.setState({ columns })
     }
+    
+    reset = () => {
+        Alert.alert(
+            'Reset Score Card',
+            'Are you sure you want to reset the score card?',
+            [
+                { text: 'OK', onPress: () => this.clearStateAndStorage() },
+                { text: 'Cancel' },
+            ],
+        )
+    }
+    
+    clearStateAndStorage = () => {
+        this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: 4 })
+        this.setStorage()
+    }
 
     render() {
         const nameWidth = 75
         const pointWidth = 50
-        const rowWidth = nameWidth + pointWidth * this.state.columns + 50
+        const rowWidth = nameWidth + pointWidth * this.state.columns + pointWidth
+        const maxHeight =  (this.state.players.length + 1) * 30
+        //(this.state.players.length - 1) * 30
+
         return (
-            <ScrollView horizontal={true} style={styles.scrollView}>
-                <View style={styles.container}>
-                    <View style={[styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }]}>
-                        {/* set width to styles.name.width - 1 to fix top alignment */}
-                        <TextInput style={styles.name}></TextInput>
-                        {/* <ScrollView horizontal={true} style={styles.scrollView}> */}
-                        { this.columnsTop() }
-                        {/* </ScrollView> */}
+            <View style={ styles.container }>
+                <View style={{ height: maxHeight }}>
+                  
+                    <ScrollView contentContainerStyle={ [styles.cardContainer, { maxHeight, flexGrow: 0.05 }] }>
+                        <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }] }>
+                            <TextInput style={ styles.name }></TextInput>
+                            { this.columnsTop() }
+                        </View>
+                        
+                        {
+                            this.state.players.map((e, i) => {
+                                let style
+                                if (i === 0) {
+                                    style = [styles.row, styles.firstRow, { minWidth: rowWidth, maxWidth: rowWidth }]
+                                }
+                                else if (i === this.state.players.lentgh - 1) {
+                                    style = [styles.row, styles.lastRow, { minWidth: rowWidth, maxWidth: rowWidth }]
+                                }
+                                else {
+                                    style = [styles.row, { minWidth: rowWidth, maxWidth: rowWidth }]
+                                }
+                                return (
+                                    <View key={ i } style={ style }>
+                                        <TextInput style={ styles.name } onChangeText={ (player) => this.updatePlayer(player, i) }>
+                                            { this.state.players[i].name }
+                                        </TextInput>
+                                        { this.columns(i) }
+                                    </View>
+                                )
+                            })
+                        }
+                    </ScrollView>
+                </View>
+                
+                <View style={ styles.centerButtons }>
+                    <View style={ styles.buttonContainer }>
+                        <TouchableOpacity onPress={ this.addPlayer } style={ styles.button }>
+                            <Text>Add a Player</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={ this.addColumn } style={ styles.button }>
+                            <Text>Add a Column</Text>
+                        </TouchableOpacity>
                     </View>
-                    
-                    {
-                        this.state.players.map((e, i) => {
-                            let style
-                            if (i === 0) {
-                                style = [styles.row, styles.firstRow, { minWidth: rowWidth, maxWidth: rowWidth }]
-                            }
-                            else if (i === this.state.players.lentgh - 1) {
-                                style = [styles.row, styles.lastRow, { minWidth: rowWidth, maxWidth: rowWidth }]
-                            }
-                            else {
-                                style = [styles.row, { minWidth: rowWidth, maxWidth: rowWidth }]
-                            }
-                            return (
-                                <View key={ i } style={ style }>
-                                    <TextInput style={ styles.name } onChangeText={ (player) => this.updatePlayer(player, i) }>{ this.state.players[i].name }</TextInput>
-                                    {/* <ScrollView horizontal={true} style={styles.scrollView}> */}
-                                    { this.columns(i) }
-                                    {/* </ScrollView> */}
-                                </View>
-                            )
-                        })
-                    }
-                    
-                    <View style={ styles.centerButtons }>
-                        <View style={ styles.buttonContainer }>
-                            <TouchableOpacity onPress={ this.addPlayer } style={ styles.addPlayer }>
-                                <Text>Add a Player</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={ this.addColumn } style={ styles.addColumn }>
-                                <Text>Add a Column</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={ styles.buttonContainer }>
-                            <TouchableOpacity onPress={ this.loadPreviousGame } style={ styles.load }>
-                                <Text>Load Last Game</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={ styles.buttonContainer }>
+                        <TouchableOpacity onPress={ this.loadPreviousGame } style={ styles.button }>
+                            <Text>Load Last Game</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={ this.reset } style={ styles.button }>
+                            <Text>Reset</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </ScrollView>
+            </View>
         )
     }
 }

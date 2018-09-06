@@ -10,7 +10,8 @@ module.exports = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         backgroundColor: colors.white,
-        padding: 10
+        padding: 10,
+        width
     },
     name: {
         backgroundColor: colors.lightGray,
@@ -35,6 +36,9 @@ module.exports = StyleSheet.create({
         alignItems:'flex-start',
         maxHeight: 30,
         minHeight: 30,
+        // width,
+        // maxWidth: width,
+        // overflow: 'scroll'
     },
     firstRow: {
         borderWidth: 1,
@@ -82,19 +86,7 @@ module.exports = StyleSheet.create({
         flexDirection: 'row',
         marginLeft: -20,
     },
-    addPlayer: {
-        borderColor: colors.black,
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 10,
-        maxWidth: width - ((width / 1.8 )),
-        minWidth: width - ((width / 1.8 )),
-        maxHeight: 45,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    addColumn: {
+    button: {
         borderColor: colors.black,
         borderWidth: 1,
         borderRadius: 10,
@@ -111,24 +103,9 @@ module.exports = StyleSheet.create({
         width,
         alignItems: 'center'
     },
-    scrollView: {
-        // minWidth: '100%'
-        backgroundColor: colors.white,
-    },
     columnHeader: {
         backgroundColor: colors.lightGray
     },
-    load: {
-        borderColor: colors.black,
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 10,
-        minWidth: width - 50,
-        maxWidth: width - 50,
-        maxHeight: 45,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        
-    },
+    cardContainer: {
+    }
 })
