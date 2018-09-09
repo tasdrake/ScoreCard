@@ -7,8 +7,11 @@ import {
     TouchableOpacity,
     ScrollView,
     AsyncStorage,
-    Alert
+    Alert,
+    StatusBar
 } from 'react-native'
+import navigationOptions from '../config/navigationOptions'
+// import StatusBar from 'react-navigation'
 
 type Props = {};
 export default class ScoreCard extends Component<Props> {
@@ -52,6 +55,22 @@ export default class ScoreCard extends Component<Props> {
             }
         })
     }
+    
+    static navigationOptions = navigationOptions
+    // static navigationOptions = {
+    //     headerStyle: {
+    //         // height: 25,
+    //         backgroundColor: colors.darkGray,
+    //         borderBottomWidth: 0
+    //     },
+    //         headerBackTitleStyle: {
+    //         // fontFamily: fonts.MontserratLight
+    //     },
+    //         headerTintColor: colors.yellow,
+    //         headerTitleStyle: {
+    //         // fontFamily: fonts.MontserratLight,
+    //     },
+    // };
   
     loadPreviousGame = async () => {
         let game = await AsyncStorage.getItem('activeGame')
@@ -200,6 +219,7 @@ export default class ScoreCard extends Component<Props> {
 
         return (
             <View style={ styles.container }>
+                <StatusBar barStyle='light-content' translucent={false} />
                 <View style={{ height: maxHeight }}>
                     <ScrollView contentContainerStyle={ styles.cardContainer } horizontal={ true } >
                         <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }, styles.hideBorder] }>

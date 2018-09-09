@@ -19,6 +19,7 @@ module.exports = StyleSheet.create({
         backgroundColor: colors.infoGray,
         borderColor: colors.yellow,
         color: colors.yellow,
+        fontFamily: fonts.MontserratRegular,
         borderRightWidth: 1,
         paddingLeft: 5,
         paddingVertical: 5,
@@ -46,7 +47,6 @@ module.exports = StyleSheet.create({
         maxWidth: 50,
         paddingVertical: 6,
         borderColor: colors.yellow,
-        // color: colors.yellow,
         borderLeftWidth: 1,
     },
     pointContainer: {
@@ -106,11 +106,13 @@ module.exports = StyleSheet.create({
     },
     buttonText: {
       fontSize: 16,
-      // fontFamily: fonts.MontserratThin,
+      fontFamily: fonts.MontserratRegular,
       color: colors.yellow,
+      fontFamily: fonts.MontserratRegular,
     },
     yellowText: {
         color: colors.yellow,
+        fontFamily: fonts.MontserratRegular,
     },
     hideCell: {
         backgroundColor: colors.darkGray,
