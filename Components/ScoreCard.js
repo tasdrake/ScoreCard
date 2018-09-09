@@ -42,8 +42,9 @@ export default class ScoreCard extends Component<Props> {
                     total: 0,
                 }
             ],
-            // columns: 4,
-            columns: 1,
+            columns: [
+                ''
+            ]
         }
         this.state.players.forEach(e => {
             for (let i = 0; i < this.state.columns; i++) {
@@ -55,7 +56,7 @@ export default class ScoreCard extends Component<Props> {
     loadPreviousGame = async () => {
         let game = await AsyncStorage.getItem('activeGame')
         game = JSON.parse(game)
-        
+        console.log(game);
         this.setState({ ...game })
     }
 
@@ -84,7 +85,7 @@ export default class ScoreCard extends Component<Props> {
 
     columns = (playerIdx) => {
         const col = []
-        for (let i = 0; i < this.state.columns + 1; i++) {
+        for (let i = 0; i < this.state.columns.length + 1; i++) {
             if (i === 0) {
                 col.push(<TextInput key={ i }
                                     keyboardType = 'numeric'
@@ -92,7 +93,7 @@ export default class ScoreCard extends Component<Props> {
                                     style={ [styles.points, styles.firstColumn, styles.yellowText] }
                                     onChangeText={ (point) => this.total(playerIdx, i, point) }
                                     value={ this.state.players[playerIdx].points[i] }></TextInput>)
-            } else if (i === this.state.columns) {
+            } else if (i === this.state.columns.length) {
                 col.push(
                     <View key={ i } textAlign={ 'center' } style={ [styles.points, styles.lastColumn] }>
                         <Text style={ styles.yellowText }>
@@ -113,21 +114,30 @@ export default class ScoreCard extends Component<Props> {
 
     columnsTop = () => {
         const col = []
-        for (let i = 0; i < this.state.columns + 1; i++) {
+        for (let i = 0; i < this.state.columns.length + 1; i++) {
             if (i === 0) {
-                col.push(<TextInput key={ i }
+                col.push(
+                    <TextInput key={ i }
                                     textAlign={ 'center' }
-                                    style={ [styles.points, styles.firstColumn, styles.yellowText, styles.topBorder] }></TextInput>)
-            } else if (i === this.state.columns) {
+                                    style={ [styles.points, styles.firstColumn, styles.yellowText, styles.topBorder] }
+                                    onChangeText={ (column) => this.updateColumn(i, column) }>
+                        { this.state.columns[i] }
+                    </TextInput>
+                )
+            } else if (i === this.state.columns.length) {
                 col.push(
                     <View key={ i } textAlign={ 'center' } style={ [styles.points, styles.lastColumn, styles.topBorder] }>
                         <Text style={ styles.yellowText }>Total</Text>
                     </View>
                 )
             } else {
-                col.push(<TextInput key={ i }
+                col.push(
+                    <TextInput key={ i }
                                     textAlign={ 'center' }
-                                    style={ [styles.points, styles.columnHeader, styles.yellowText, styles.topBorder] }></TextInput>)
+                                    style={ [styles.points, styles.columnHeader, styles.yellowText, styles.topBorder] }
+                                    onChangeText={ (column) => this.updateColumn(i, column) }>
+                        { this.state.columns[i] }
+                    </TextInput>)
             }
         }
         return <View style={ styles.pointContainer }>{ col }</View>
@@ -154,8 +164,8 @@ export default class ScoreCard extends Component<Props> {
     }
     
     addColumn = () => {
-        let columns = this.state.columns
-        columns++
+        const columns = this.state.columns
+        columns.push('')
         this.setState({ columns })
     }
     
@@ -174,11 +184,18 @@ export default class ScoreCard extends Component<Props> {
         this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: 4 })
         this.setStorage()
     }
+    
+    updateColumn = (i, column) => {
+        const columns = this.state.columns
+        columns[i] = column
+        this.setState({ columns })
+        this.setStorage()
+    }
 
     render() {
         const nameWidth = 75
         const pointWidth = 50
-        const rowWidth = nameWidth + pointWidth * this.state.columns + pointWidth
+        const rowWidth = nameWidth + pointWidth * this.state.columns.length + pointWidth
         const maxHeight =  (this.state.players.length + 1) * 30
 
         return (
