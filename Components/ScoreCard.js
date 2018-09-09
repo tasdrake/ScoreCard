@@ -53,9 +53,10 @@ export default class ScoreCard extends Component<Props> {
     }
   
     loadPreviousGame = async () => {
-        let players = await AsyncStorage.getItem('activeGame')
-        players = JSON.parse(players)
-        this.setState({ players })
+        let game = await AsyncStorage.getItem('activeGame')
+        game = JSON.parse(game)
+        
+        this.setState({ ...game })
     }
 
     total = async (playerIdx, i, point) => {
@@ -78,7 +79,7 @@ export default class ScoreCard extends Component<Props> {
     }
     
     setStorage = () => {
-        AsyncStorage.setItem('activeGame', JSON.stringify(this.state.players))
+        AsyncStorage.setItem('activeGame', JSON.stringify(this.state))
     }
 
     columns = (playerIdx) => {
@@ -88,13 +89,13 @@ export default class ScoreCard extends Component<Props> {
                 col.push(<TextInput key={ i }
                                     keyboardType = 'numeric'
                                     textAlign={ 'center' }
-                                    style={ [styles.points, styles.firstColumn] }
+                                    style={ [styles.points, styles.firstColumn, styles.yellowText] }
                                     onChangeText={ (point) => this.total(playerIdx, i, point) }
                                     value={ this.state.players[playerIdx].points[i] }></TextInput>)
             } else if (i === this.state.columns) {
                 col.push(
                     <View key={ i } textAlign={ 'center' } style={ [styles.points, styles.lastColumn] }>
-                        <Text>
+                        <Text style={ styles.yellowText }>
                             { this.state.players[playerIdx].total }
                         </Text>
                     </View>)
@@ -102,7 +103,7 @@ export default class ScoreCard extends Component<Props> {
                 col.push(<TextInput key={ i }
                                     keyboardType = 'numeric'
                                     textAlign={ 'center' }
-                                    style={ styles.points }
+                                    style={ [styles.points, styles.yellowText] }
                                     onChangeText={ (point) => this.total(playerIdx, i, point) }
                                     value={ this.state.players[playerIdx].points[i] }></TextInput>)
             }
@@ -116,17 +117,17 @@ export default class ScoreCard extends Component<Props> {
             if (i === 0) {
                 col.push(<TextInput key={ i }
                                     textAlign={ 'center' }
-                                    style={ [styles.points, styles.firstColumn] }></TextInput>)
+                                    style={ [styles.points, styles.firstColumn, styles.yellowText, styles.topBorder] }></TextInput>)
             } else if (i === this.state.columns) {
                 col.push(
-                    <View key={ i } textAlign={ 'center' } style={ [styles.points, styles.lastColumn] }>
-                        <Text>Total</Text>
+                    <View key={ i } textAlign={ 'center' } style={ [styles.points, styles.lastColumn, styles.topBorder] }>
+                        <Text style={ styles.yellowText }>Total</Text>
                     </View>
                 )
             } else {
                 col.push(<TextInput key={ i }
                                     textAlign={ 'center' }
-                                    style={ [styles.points, styles.columnHeader] }></TextInput>)
+                                    style={ [styles.points, styles.columnHeader, styles.yellowText, styles.topBorder] }></TextInput>)
             }
         }
         return <View style={ styles.pointContainer }>{ col }</View>
@@ -184,8 +185,8 @@ export default class ScoreCard extends Component<Props> {
             <View style={ styles.container }>
                 <View style={{ height: maxHeight }}>
                     <ScrollView contentContainerStyle={ styles.cardContainer } horizontal={ true } >
-                        <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }] }>
-                            <TextInput style={ styles.name } editable={ false } selectTextOnFocus={ false }></TextInput>
+                        <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }, styles.hideBorder] }>
+                            <TextInput style={ [styles.name, styles.hideCell] } editable={ false } selectTextOnFocus={ false }></TextInput>
                             { this.columnsTop() }
                         </View>
                         
@@ -217,18 +218,18 @@ export default class ScoreCard extends Component<Props> {
                 <View style={ styles.centerButtons }>
                     <View style={ styles.buttonContainer }>
                         <TouchableOpacity onPress={ this.addPlayer } style={ styles.button }>
-                            <Text>Add a Player</Text>
+                            <Text style={ styles.buttonText }>Add a Player</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={ this.addColumn } style={ styles.button }>
-                            <Text>Add a Column</Text>
+                            <Text style={ styles.buttonText }>Add a Column</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.buttonContainer }>
                         <TouchableOpacity onPress={ this.loadPreviousGame } style={ styles.button }>
-                            <Text>Load Last Game</Text>
+                            <Text style={ styles.buttonText }>Load Last Game</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={ this.reset } style={ styles.button }>
-                            <Text>Reset</Text>
+                            <Text style={ styles.buttonText }>Reset</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
