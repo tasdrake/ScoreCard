@@ -61,7 +61,6 @@ export default class ScoreCard extends Component<Props> {
     loadPreviousGame = async () => {
         let game = await AsyncStorage.getItem('activeGame')
         game = JSON.parse(game)
-        console.log(game);
         this.setState({ ...game })
     }
 

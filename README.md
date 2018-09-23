@@ -15,6 +15,12 @@ Occasionally if you get the same error repeatedly sometimes ```$ yarn start --re
 
 If you get errors in Xcode ```$ rm -rf node_modules && yarn install ``` will usually fix the problem
 
+ios 12 build failure fix
+``` 
+$ cd node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
+$ cd node_modules/react-native/third-party/glog-0.3.5/ && ../../scripts/ios-configure-glog.sh && cd ../../../../
+```
+
 Snippets for ~/.atom/snipets.cson:
 
 ```cson
