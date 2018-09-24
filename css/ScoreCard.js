@@ -108,7 +108,6 @@ module.exports = StyleSheet.create({
       fontSize: 16,
       fontFamily: fonts.MontserratRegular,
       color: colors.yellow,
-      fontFamily: fonts.MontserratRegular,
     },
     yellowText: {
         color: colors.yellow,
