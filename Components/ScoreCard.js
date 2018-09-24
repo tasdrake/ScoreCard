@@ -61,6 +61,9 @@ export default class ScoreCard extends Component<Props> {
     loadPreviousGame = async () => {
         let game = await AsyncStorage.getItem('activeGame')
         game = JSON.parse(game)
+        if (!game) {
+            game = { players: [{ name: '', points: 0, total: 0 }], columns: [''] }
+        }
         this.setState({ ...game })
     }
 
@@ -185,7 +188,7 @@ export default class ScoreCard extends Component<Props> {
     }
     
     clearStateAndStorage = () => {
-        this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: 4 })
+        this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: [''] })
         this.setStorage()
     }
     
