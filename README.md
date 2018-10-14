@@ -5,7 +5,7 @@ To start the app:
 1. ```$ react-native run-ios```
 
 In Xcode
-1. ```$ yarn start```gaa
+1. ```$ yarn start```
 1. Open scoreCard/ios/scoreCard.xcodeproj
 1. Select target device, either the simulator or a connected device
 1. Click run
@@ -29,7 +29,7 @@ Snippets for ~/.atom/snipets.cson:
     'Import React Native':
         'prefix':'imptrn'
         'body': """
-            import React, { Component } from 'react';
+            import React, { Component } from 'react'
             import styles from '../css/$1'
 
             type Props = {}

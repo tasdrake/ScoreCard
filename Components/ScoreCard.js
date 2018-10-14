@@ -188,6 +188,7 @@ export default class ScoreCard extends Component<Props> {
     }
     
     clearStateAndStorage = () => {
+        this.AsyncStorage.clear()
         this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: [''] })
         this.setStorage()
     }
