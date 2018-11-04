@@ -46,7 +46,20 @@ export default class ScoreCard extends Component<Props> {
                 }
             ],
             columns: [
-                ''
+                // ''
+                12,
+                11,
+                10,
+                9,
+                8,
+                7,
+                6,
+                5,
+                4,
+                3,
+                2,
+                1,
+                0
             ]
         }
         this.state.players.forEach(e => {
@@ -188,7 +201,7 @@ export default class ScoreCard extends Component<Props> {
     }
     
     clearStateAndStorage = () => {
-        this.AsyncStorage.clear()
+        AsyncStorage.clear()
         this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: [''] })
         this.setStorage()
     }
@@ -210,34 +223,38 @@ export default class ScoreCard extends Component<Props> {
             <View style={ styles.container }>
                 <StatusBar barStyle='light-content' translucent={false} />
                 <View style={{ height: maxHeight }}>
-                    <ScrollView contentContainerStyle={ styles.cardContainer } horizontal={ true } >
-                        <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }, styles.hideBorder] }>
-                            <TextInput style={ [styles.name, styles.hideCell] } editable={ false } selectTextOnFocus={ false }></TextInput>
-                            { this.columnsTop() }
+                    <ScrollView 
+                        horizontal={ true } >
+                        <View style={ styles.cardContainer }>
+                            
+                            <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }, styles.hideBorder] }>
+                                <TextInput style={ [styles.name, styles.hideCell] } editable={ false } selectTextOnFocus={ false }></TextInput>
+                                { this.columnsTop() }
+                            </View>
+                            
+                            {
+                                this.state.players.map((e, i) => {
+                                    let style
+                                    if (i === 0) {
+                                        style = [styles.row, styles.firstRow, { minWidth: rowWidth, maxWidth: rowWidth }]
+                                    }
+                                    else if (i === this.state.players.lentgh - 1) {
+                                        style = [styles.row, styles.lastRow, { minWidth: rowWidth, maxWidth: rowWidth }]
+                                    }
+                                    else {
+                                        style = [styles.row, { minWidth: rowWidth, maxWidth: rowWidth }]
+                                    }
+                                    return (
+                                        <View key={ i } style={ style }>
+                                            <TextInput style={ styles.name } onChangeText={ (player) => this.updatePlayer(player, i) }>
+                                                { this.state.players[i].name }
+                                            </TextInput>
+                                            { this.columns(i) }
+                                        </View>
+                                    )
+                                })
+                            } 
                         </View>
-                        
-                        {
-                            this.state.players.map((e, i) => {
-                                let style
-                                if (i === 0) {
-                                    style = [styles.row, styles.firstRow, { minWidth: rowWidth, maxWidth: rowWidth }]
-                                }
-                                else if (i === this.state.players.lentgh - 1) {
-                                    style = [styles.row, styles.lastRow, { minWidth: rowWidth, maxWidth: rowWidth }]
-                                }
-                                else {
-                                    style = [styles.row, { minWidth: rowWidth, maxWidth: rowWidth }]
-                                }
-                                return (
-                                    <View key={ i } style={ style }>
-                                        <TextInput style={ styles.name } onChangeText={ (player) => this.updatePlayer(player, i) }>
-                                            { this.state.players[i].name }
-                                        </TextInput>
-                                        { this.columns(i) }
-                                    </View>
-                                )
-                            })
-                        }
                     </ScrollView>
                 </View>
                 

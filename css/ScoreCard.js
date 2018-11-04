@@ -101,6 +101,7 @@ module.exports = StyleSheet.create({
         backgroundColor: colors.infoGray,
     },
     cardContainer: {
+        width: '100%',
         flex: 1,
         flexDirection: 'column',
     },
