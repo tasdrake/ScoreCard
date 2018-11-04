@@ -4,13 +4,15 @@ import {
     Text,
     View,
     TextInput,
-    TouchableOpacity,
     ScrollView,
     AsyncStorage,
-    Alert,
     StatusBar
 } from 'react-native'
 import navigationOptions from '../config/navigationOptions'
+import Header from './Header'
+import Row from './Row'
+import Actions from './Actions'
+
 // import StatusBar from 'react-navigation'
 
 type Props = {};
@@ -132,37 +134,6 @@ export default class ScoreCard extends Component<Props> {
         return <View style={ styles.pointContainer }>{ col }</View>
     }
 
-    columnsTop = () => {
-        const col = []
-        for (let i = 0; i < this.state.columns.length + 1; i++) {
-            if (i === 0) {
-                col.push(
-                    <TextInput key={ i }
-                                    textAlign={ 'center' }
-                                    style={ [styles.points, styles.firstColumn, styles.yellowText, styles.topBorder] }
-                                    onChangeText={ (column) => this.updateColumn(i, column) }>
-                        { this.state.columns[i] }
-                    </TextInput>
-                )
-            } else if (i === this.state.columns.length) {
-                col.push(
-                    <View key={ i } textAlign={ 'center' } style={ [styles.points, styles.lastColumn, styles.topBorder] }>
-                        <Text style={ styles.yellowText }>Total</Text>
-                    </View>
-                )
-            } else {
-                col.push(
-                    <TextInput key={ i }
-                                    textAlign={ 'center' }
-                                    style={ [styles.points, styles.columnHeader, styles.yellowText, styles.topBorder] }
-                                    onChangeText={ (column) => this.updateColumn(i, column) }>
-                        { this.state.columns[i] }
-                    </TextInput>)
-            }
-        }
-        return <View style={ styles.pointContainer }>{ col }</View>
-    }
-
     addPlayer = () => {
         const players = this.state.players
         const newPlayer = {
@@ -181,6 +152,7 @@ export default class ScoreCard extends Component<Props> {
         const players = this.state.players
         players[i].name = player
         this.setState({ players })
+        this.setStorage()
     }
     
     addColumn = () => {
@@ -189,20 +161,10 @@ export default class ScoreCard extends Component<Props> {
         this.setState({ columns })
     }
     
-    reset = () => {
-        Alert.alert(
-            'Reset Score Card',
-            'Are you sure you want to reset the score card?',
-            [
-                { text: 'OK', onPress: () => this.clearStateAndStorage() },
-                { text: 'Cancel' },
-            ],
-        )
-    }
-    
     clearStateAndStorage = () => {
         AsyncStorage.clear()
         this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: [''] })
+        console.log(this.state);
         this.setStorage()
     }
     
@@ -211,6 +173,18 @@ export default class ScoreCard extends Component<Props> {
         columns[i] = column
         this.setState({ columns })
         this.setStorage()
+    }
+    
+    style = (i, width) => {
+        if (i === 0) {
+            return [styles.row, styles.firstRow, { minWidth: width, maxWidth: width }]
+        }
+        else if (i === this.state.players.length - 1) {
+            return [styles.row, styles.lastRow, { minWidth: width, maxWidth: width }]
+        }
+        else {
+            return [styles.row, { minWidth: width, maxWidth: width }]
+        }
     }
 
     render() {
@@ -226,56 +200,30 @@ export default class ScoreCard extends Component<Props> {
                     <ScrollView 
                         horizontal={ true } >
                         <View style={ styles.cardContainer }>
-                            
-                            <View style={ [styles.row, styles.info, { minWidth: rowWidth, maxWidth: rowWidth }, styles.hideBorder] }>
-                                <TextInput style={ [styles.name, styles.hideCell] } editable={ false } selectTextOnFocus={ false }></TextInput>
-                                { this.columnsTop() }
-                            </View>
+                            <Header columns={ this.state.columns } 
+                                    rowWidth={ rowWidth } 
+                                    updateColumn={ this.updateColumn }/>
                             
                             {
-                                this.state.players.map((e, i) => {
-                                    let style
-                                    if (i === 0) {
-                                        style = [styles.row, styles.firstRow, { minWidth: rowWidth, maxWidth: rowWidth }]
-                                    }
-                                    else if (i === this.state.players.lentgh - 1) {
-                                        style = [styles.row, styles.lastRow, { minWidth: rowWidth, maxWidth: rowWidth }]
-                                    }
-                                    else {
-                                        style = [styles.row, { minWidth: rowWidth, maxWidth: rowWidth }]
-                                    }
-                                    return (
-                                        <View key={ i } style={ style }>
-                                            <TextInput style={ styles.name } onChangeText={ (player) => this.updatePlayer(player, i) }>
-                                                { this.state.players[i].name }
-                                            </TextInput>
-                                            { this.columns(i) }
-                                        </View>
-                                    )
-                                })
-                            } 
+                                this.state.players.map((e, i) => (
+                                    <Row key={ i } 
+                                         i={ i }
+                                         updateColumn={ this.updateColumn } 
+                                         total={ this.total }
+                                         updatePlayer={ this.updatePlayer }
+                                         player={ this.state.players[i] }
+                                         style={ this.style(i, rowWidth) }
+                                         columns={ this.state.columns }/>
+                                ))
+                            }
                         </View>
                     </ScrollView>
                 </View>
-                
-                <View style={ styles.centerButtons }>
-                    <View style={ styles.buttonContainer }>
-                        <TouchableOpacity onPress={ this.addPlayer } style={ styles.button }>
-                            <Text style={ styles.buttonText }>Add a Player</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={ this.addColumn } style={ styles.button }>
-                            <Text style={ styles.buttonText }>Add a Column</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={ styles.buttonContainer }>
-                        <TouchableOpacity onPress={ this.loadPreviousGame } style={ styles.button }>
-                            <Text style={ styles.buttonText }>Load Last Game</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={ this.reset } style={ styles.button }>
-                            <Text style={ styles.buttonText }>Reset</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                <Actions setState={ this.setState }
+                         clearStateAndStorage={ this.clearStateAndStorage }
+                         loadPreviousGame={ this.loadPreviousGame }
+                         addColumn={ this.addColumn }
+                         addPlayer={ this.addPlayer }/>
             </View>
         )
     }
