@@ -22,7 +22,7 @@ $ cd node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../
 $ cd node_modules/react-native/third-party/glog-0.3.5/ && ../../scripts/ios-configure-glog.sh && cd ../../../../
 ```
 TODO:
-    * Fixed row headers for scrolling
+    * Fixed row headers for scrolling (Tas)
     * redux
     * load templates
     * larger column heads/dynamically sized based on content

@@ -48,20 +48,20 @@ export default class ScoreCard extends Component<Props> {
                 }
             ],
             columns: [
-                // ''
-                12,
-                11,
-                10,
-                9,
-                8,
-                7,
-                6,
-                5,
-                4,
-                3,
-                2,
-                1,
-                0
+                ''
+                // 12,
+                // 11,
+                // 10,
+                // 9,
+                // 8,
+                // 7,
+                // 6,
+                // 5,
+                // 4,
+                // 3,
+                // 2,
+                // 1,
+                // 0
             ]
         }
         this.state.players.forEach(e => {
@@ -164,7 +164,6 @@ export default class ScoreCard extends Component<Props> {
     clearStateAndStorage = () => {
         AsyncStorage.clear()
         this.setState({ players: [{ name: '', points: 0, total: 0 }], columns: [''] })
-        console.log(this.state);
         this.setStorage()
     }
     
